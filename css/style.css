@@ -81,4 +81,55 @@ input:focus {
 }
 
 /* Button with neon glow */
+button {
+  margin-top: 15px;
+  padding: 10px 25px;
+  background: linear-gradient(90deg, #00f2ff, #0078ff);
+  border: none;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 1px;
+  transition: 0.4s;
+  box-shadow: 0 0 10px #00f2ff;
+}
 
+button:hover {
+  box-shadow: 0 0 25px #00f2ff, 0 0 50px #0078ff;
+  transform: scale(1.1);
+}
+
+/* Result box */
+#result {
+  margin-top: 25px;
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+  font-size: 18px;
+  color: #fff;
+  font-weight: 500;
+  text-align: left;
+  animation: fadeIn 0.6s ease-in;
+}
+
+#result p {
+  margin: 8px 0;
+  padding: 6px 10px;
+  border-left: 4px solid #00f2ff;
+  background: rgba(255,255,255,0.1);
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+#result p:hover {
+  background: rgba(0, 242, 255, 0.2);
+  transform: translateX(8px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
