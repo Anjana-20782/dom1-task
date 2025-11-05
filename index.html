@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-   <link rel="stylesheet" href="./css/pyramid-css">
+   <link rel="stylesheet" href="./css/multiply-style.css">
+    
 </head>
 <body>
     
-    <!-- 1 -->
+  
 
     <!-- <div class="main">
 
@@ -17,15 +18,208 @@
         <div id="result"></div>
     </div> -->
 
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Table</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #f8f9fa;
+  }
+
+  h2 {
+    text-align: center;
+  }
+
+  .container {
+    width: 500px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  input[type="text"] {
+    width: 70%;
+    padding: 8px;
+    margin-right: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
 
 
-    <!-- 2 -->
+  button:hover {
+    background-color: #0056b3;
+  }
 
-    <input type="number" id="number">
-    <button id="star">Click</button>
-    <div id="result"></div>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+  }
 
-    <!-- <script src="./js/multiple.js"></script> -->
-    <script src="./js/pyramid.js"></script>
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .completed {
+    text-decoration: line-through;
+    color: gray;
+  }
+  #allbtn{
+
+    margin-top: 20px;
+    margin-left: 120px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Task Manager</h2>
+  <input type="text" id="taskInput" placeholder="Enter your task">
+  <button onclick="addTask()">Add</button>
+
+  <div class="filter">
+    <button id="allbtn" class="active" onclick="setFilter('all')">All</button>
+    <button id="pendingbtn"  onclick="setFilter('pending')">pending</button>
+    <button id="completedbtn"  onclick="setFilter('completed')">completed</button>
+  </div>
+
+  <table id="taskTable">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Task</th>
+        <th>Action</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+
+let tasks=JSON.parse(localStorage.getItem("tasks")) || [];
+let currentfilter="all"
+
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+
+function addTask(){
+let tasktext=document.getElementById("taskInput").value;
+console.log(tasktext);
+
+if(tasktext==="")
+return alert("enter task here")
+
+tasks.push({text:tasktext,completed:false});
+document.getElementById("taskInput").value="";
+displayTask()
+saveTasks() 
+}
+
+function displayTask() {
+  const tbody = document.querySelector('#taskTable tbody');
+  tbody.innerHTML = "";
+
+
+
+   let filteredTasks = tasks;  // 👈 keep original safe
+
+  if (currentfilter === "pending") {
+    filteredTasks = tasks.filter(task => !task.completed);
+  } else if (currentfilter === "completed") {
+    filteredTasks = tasks.filter(task => task.completed);
+  }
+
+  filteredTasks.forEach((task, index) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td class="${task.completed ? 'completed' : ''}">${task.text}</td>
+      <td><input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleStatus(${index})"></td>
+      <td><button onclick="editTask(${index})">Edit</button></td>
+      <td><button onclick="deleteTask(${index})">Delete</button></td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+
+function toggleStatus(index)
+{
+    tasks[index].completed = !tasks[index].completed
+    displayTask()
+    saveTasks() 
+}
+
+function editTask(index)
+{
+    let newTask=prompt("enter the edited task here",tasks[index].text)
+    if(newTask)
+    // if (newTask !== null && newTask !== "")
+    {
+    tasks[index].text=newTask
+   }
+   displayTask()
+   saveTasks() 
+}
+
+function deleteTask(index)
+{
+    if(confirm("are you sure to delete the task here"))
+    // tasks.splice(index,1)
+      tasks=tasks.filter((task,i)=>i!==index)
+    displayTask()
+    saveTasks() 
+}
+
+function setFilter(filterType)
+{
+    currentfilter=filterType
+
+    document.querySelectorAll('.filter button').forEach(btn=>btn.classList.remove('active'))
+    document.getElementById(filterType+"btn").classList.add('active')
+    displayTask()
+}
+
+window.onload = displayTask;
+
+
+</script>
+
+</body>
+</html>
+
+
+
+    <script src="./js/multiple.js"></script>
 </body>
 </html>
